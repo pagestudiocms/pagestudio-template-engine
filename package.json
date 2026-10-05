@@ -1,0 +1,16 @@
+{
+  "name": "@pagestudiocms/lex-parser",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tests-first migration of the PageStudio Lex parser to TypeScript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test tests/correctness.test.cjs",
+    "test:baseline": "node --test tests/baseline.test.cjs",
+    "test:compatibility": "node --test tests/compatibility.test.cjs"
+  }
+}
