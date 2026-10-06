@@ -1,9 +1,45 @@
-# PageStudio Lex Parser
+# PageStudio Template Engine
 
-A synchronous TypeScript parser for Lex templates, compiled to CommonJS for
+A TypeScript/Node.js port of the legacy
+[PyroCMS Lex parser](https://github.com/pyrocms/lex/tree/master), adapted for
+PageStudio CMS templates. It parses synchronously and compiles to CommonJS for
 Node.js 18 or later. The package exports `LexParser`, `LexParsingException`, and
 public TypeScript types. The JavaScript entry point is `dist/index.js`, with
 declarations at `dist/index.d.ts`.
+
+## Rationale
+
+PageStudio CMS template development requires compiling and rendering templates
+in the browser as developers build them. The legacy PHP Lex implementation
+cannot run directly in that environment, motivating a JavaScript/TypeScript port
+of the template parser.
+
+The goal is a shared parsing core for browser-based template development and the
+Node.js development server, rather than separate implementations for each
+environment. Filesystem access, plugin discovery, and other environment-specific
+integrations remain outside the core parser.
+
+The current package delivers a Node.js/CommonJS build. Browser packaging,
+browser-compatible plugin integrations, and browser runtime tests are still
+needed before browser support can be claimed. The TypeScript-to-JavaScript build
+is distinct from the template compilation/rendering performed by the parser.
+
+## Origin And Compatibility
+
+PyroCMS Lex is the upstream PHP template parser and syntax reference. Its README
+identifies the project as MIT-licensed and credits the PyroCMS Team. This package
+continues the PageStudio JavaScript adaptation in TypeScript; it is not a
+drop-in replacement for the original PHP API or a fully conformant port yet.
+
+The migration baseline is the PageStudio development server's JavaScript parser,
+not an execution of upstream PHP Lex. Passing the compatibility suite therefore
+establishes parity with that JavaScript baseline for the covered cases only.
+
+Upstream features not yet implemented include Lex comments, `noparse` blocks,
+the `exists` conditional operator, configurable scope glue, and recursive callback
+markers. Callback routing, signatures, and standalone/block rules are adapted for
+PageStudio rather than reproducing all upstream behavior. PHP execution is not
+supported. Upstream-derived conformance tests are a separate future requirement.
 
 ## Development
 
@@ -23,7 +59,7 @@ publishing and release configuration are agreed.
 ## Usage
 
 ```js
-const { LexParser } = require('@pagestudiocms/lex-parser');
+const { LexParser } = require('@pagestudiocms/template-engine');
 
 const parser = new LexParser();
 const output = parser.parse('Hello, {{ user.name }}!', {
