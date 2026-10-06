@@ -2,15 +2,25 @@
   "name": "@pagestudiocms/lex-parser",
   "version": "0.1.0",
   "private": true,
-  "description": "Tests-first migration of the PageStudio Lex parser to TypeScript",
+  "description": "Typed synchronous Lex template parser for PageStudio",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": ["dist"],
   "engines": {
     "node": ">=18"
   },
+  "dependencies": {
+    "jsep": "^1.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  },
   "scripts": {
-    "test": "node --test tests/correctness.test.cjs",
+    "build": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\" && tsc -p tsconfig.json",
+    "prepack": "npm run build",
+    "test": "npm run build && npm run test:types && node --test tests/correctness.test.cjs",
+    "test:types": "tsc -p tsconfig.types.json",
     "test:baseline": "node --test tests/baseline.test.cjs",
-    "test:compatibility": "node --test tests/compatibility.test.cjs"
+    "test:compatibility": "npm run build && node --test tests/compatibility.test.cjs"
   }
 }
